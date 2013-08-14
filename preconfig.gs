@@ -3,16 +3,12 @@ function formRanger_preconfig() {
   setformRangerSid();
   var ssId = SpreadsheetApp.getActiveSpreadsheet().getId();
   ScriptProperties.setProperty('ssId', ssId);
+  
   // if you are interested in sharing your complete workflow system for others to copy (with script settings)
   // Select the "Generate preconfig()" option in the menu and
   //#######Paste preconfiguration code below before sharing your system for copy#######
   
   
-  
-  
-  
-  
-
   //#######End preconfiguration code#######
   formRanger_getInstitutionalTrackerObject();
   ScriptProperties.setProperty('preconfigStatus', 'true'); 
@@ -48,7 +44,9 @@ function formRanger_extractorWindow () {
   codeString += "  formRanger_retrieveformurls(); \n";
   codeString += "} \n";
   codeString += "var triggerTypesVar = ScriptProperties.getProperty('triggerTypes');\n";
-  codeString += "formRanger_checkSetTriggers(triggerTypesVar);\n";
+  codeString += "if (triggerTypesVar) { \n";
+  codeString += "  formRanger_checkSetTriggers(triggerTypesVar);\n";
+  codeString += "} \n";
   codeString += "ss.toast('Custom formRanger preconfiguration ran successfully. Please check formRanger menu options to confirm system settings.');\n";
   window.setText(codeString).setWidth("100%").setHeight("350px");
   app.add(label);
