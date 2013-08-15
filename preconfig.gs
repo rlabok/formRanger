@@ -1,5 +1,4 @@
 function formRanger_preconfig() {
-  setformRangerUid();
   setformRangerSid();
   var ssId = SpreadsheetApp.getActiveSpreadsheet().getId();
   ScriptProperties.setProperty('ssId', ssId);
