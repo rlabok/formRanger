@@ -3,6 +3,9 @@
 // See restrictions at http://www.opensource.org/licenses/gpl-3.0.html
 // Support and contact at http://www.youpd.org/formranger
 
+var scriptName = "formRanger"
+var scritpTrackingId = "UA-40688501-1"
+
 var FORMRANGERIMAGEID = "0B2vrNcqyzernTzhZT0JZYTVFTWc";
 
 function onInstall() {
@@ -144,7 +147,6 @@ function formRangerUi() {
 
 
 function formRanger_saveSettings(e) {
-  setformRangerUid();
   setformRangerSid();
   var app = UiApp.getActiveApplication();
   var ss = SpreadsheetApp.getActiveSpreadsheet();
