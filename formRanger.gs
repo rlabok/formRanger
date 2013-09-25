@@ -4,8 +4,7 @@
 // Support and contact at http://www.youpd.org/formranger
 
 var scriptName = "formRanger"
-var scritpTrackingId = "UA-40688501-1"
-
+var scriptTrackingId = "UA-40688501-1"
 var FORMRANGERIMAGEID = "0B2vrNcqyzernTzhZT0JZYTVFTWc";
 
 function onInstall() {
@@ -147,7 +146,7 @@ function formRangerUi() {
 
 
 function formRanger_saveSettings(e) {
-  setformRangerSid();
+  setSid();
   var app = UiApp.getActiveApplication();
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var ssId = ss.getId();
