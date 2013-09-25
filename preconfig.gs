@@ -41,12 +41,10 @@ function formRanger_extractorWindow () {
   codeString += propertyString; 
   codeString += "};\n";
   codeString += "ScriptProperties.setProperty('preconfigStatus','true');\n";
-  codeString += "var ss = SpreadsheetApp.getActiveSpreadsheet();\n";
-  codeString += "if (ss.getSheetByName('Forms in same folder')) { \n";
-  codeString += "  formRanger_retrieveformurls(); \n";
-  codeString += "} \n";
   codeString += "var triggerTypesVar = ScriptProperties.getProperty('triggerTypes');\n";
-  codeString += "formRanger_checkSetTriggers(triggerTypesVar);\n";
+  codeString += "if (triggerTypesVar) {\n";
+  codeString += "  formRanger_checkSetTriggers(triggerTypesVar);\n";
+  codeString += "}\n"
   codeString += "ss.toast('Custom formRanger preconfiguration ran successfully. Please check formRanger menu options to confirm system settings.');\n";
   window.setText(codeString).setWidth("100%").setHeight("350px");
   app.add(label);
