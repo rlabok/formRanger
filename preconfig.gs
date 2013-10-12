@@ -1,6 +1,7 @@
 function formRanger_preconfig() {
-  setformRangerSid();
-  var ssId = SpreadsheetApp.getActiveSpreadsheet().getId();
+  setSid();
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var ssId = ss.getId();
   ScriptProperties.setProperty('ssId', ssId);
   // if you are interested in sharing your complete workflow system for others to copy (with script settings)
   // Select the "Generate preconfig()" option in the menu and
@@ -8,8 +9,7 @@ function formRanger_preconfig() {
   
   
   
-  
-  
+
   
 
   //#######End preconfiguration code#######
