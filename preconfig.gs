@@ -2,31 +2,28 @@ function formRanger_preconfig() {
   setSid();
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var ssId = ss.getId();
-  ScriptProperties.setProperty('ssId', ssId);
+  var scriptProperties = PropertiesService.getScriptProperties();
+  scriptProperties.setProperty('ssId', ssId);
   // if you are interested in sharing your complete workflow system for others to copy (with script settings)
   // Select the "Generate preconfig()" option in the menu and
   //#######Paste preconfiguration code below before sharing your system for copy#######
   
-  
-  
-  
-  
-  
 
   //#######End preconfiguration code#######
-  ScriptProperties.setProperty('preconfigStatus', 'true'); 
+  scriptProperties.setProperty('preconfigStatus', 'true'); 
   onOpen();
 }
 
 
 function formRanger_extractorWindow () {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var properties = ScriptProperties.getProperties();
+  var scriptProperties = PropertiesService.getScriptProperties();
+  var properties = scriptProperties.getProperties();
   var propertyString = '';
   for (var key in properties) {
     if ((properties[key]!='')&&(key!="preconfigStatus")&&(key!="formRanger_sid")&&(key!="ssId")) {
       var keyProperty = properties[key].replace(/[/\\*]/g, "\\\\");                                     
-      propertyString += "   ScriptProperties.setProperty('" + key + "','" + keyProperty + "');\n";
+      propertyString += "   scriptProperties.setProperty('" + key + "','" + keyProperty + "');\n";
     }
   }
   var app = UiApp.createApplication().setHeight(500).setTitle("Export preconfig() settings");
@@ -37,12 +34,13 @@ function formRanger_extractorWindow () {
   var label = app.createLabel(labelText);
   var window = app.createTextArea();
   var codeString = "//This section sets all script properties associated with this formRanger profile \n";
-  codeString += "var preconfigStatus = ScriptProperties.getProperty('preconfigStatus');\n";
+  codeString += "var scriptProperties = PropertiesService.getScriptProperties();\n";
+  codeString += "var preconfigStatus = scriptProperties.getProperty('preconfigStatus');\n";
   codeString += "if (preconfigStatus!='true') {\n";
   codeString += propertyString; 
   codeString += "};\n";
-  codeString += "ScriptProperties.setProperty('preconfigStatus','true');\n";
-  codeString += "var triggerTypesVar = ScriptProperties.getProperty('triggerTypes');\n";
+  codeString += "scriptProperties.setProperty('preconfigStatus','true');\n";
+  codeString += "var triggerTypesVar = scriptProperties.getProperty('triggerTypes');\n";
   codeString += "if (triggerTypesVar) {\n";
   codeString += "  formRanger_checkSetTriggers(triggerTypesVar);\n";
   codeString += "}\n"
