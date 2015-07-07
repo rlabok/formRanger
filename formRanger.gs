@@ -2,7 +2,9 @@
 // Published under GNU General Public License, version 3 (GPL-3.0)
 // See restrictions at http://www.opensource.org/licenses/gpl-3.0.html
 // Support and contact at http://www.youpd.org/formranger
+// #modified v2: rlabok
 
+var formUrl = ''
 var scriptName = "formRanger"
 var scriptTrackingId = "UA-40688501-1"
 var FORMRANGERIMAGEID = "0B2vrNcqyzernTzhZT0JZYTVFTWc";
@@ -13,7 +15,8 @@ function onInstall() {
 
 function onOpen() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var preconfigStatus = ScriptProperties.getProperty('preconfigStatus');
+  var scriptProperties = PropertiesService.getScriptProperties();
+  var preconfigStatus = scriptProperties.getProperty('preconfigStatus');
   var menuItems = [];
   menuItems[0] = {name:'What is formRanger?', functionName: 'formRanger_whatIs'};
   menuItems[1] = null;
@@ -31,7 +34,8 @@ function onOpen() {
 
 function formRangerUi() {
   var allowedTypes = ["MULTIPLE_CHOICE","LIST","CHECKBOX"];
-  var properties = ScriptProperties.getProperties();
+  var scriptProperties = PropertiesService.getScriptProperties();
+  var properties = scriptProperties.getProperties();
   if (properties.questionRanges) {
     var questionRanges = Utilities.jsonParse(properties.questionRanges);
   }
@@ -153,6 +157,7 @@ function formRanger_saveSettings(e) {
   var form = FormApp.openByUrl(ss.getFormUrl());
   var items = form.getItems();
   var questionRanges = new Object();
+  var scriptProperties = PropertiesService.getScriptProperties();
   for (var i=0; i<items.length; i++) {
     var qId = items[i].getId();
     var thisSheetId = e.parameter['sheetId-'+qId];
@@ -168,8 +173,9 @@ function formRanger_saveSettings(e) {
   } catch(err) {
   }
   questionRanges = Utilities.jsonStringify(questionRanges);
-  ScriptProperties.setProperty('questionRanges', questionRanges);
-  ScriptProperties.setProperty('ssId', ssId);
+  
+  scriptProperties.setProperty('questionRanges', questionRanges);
+  scriptProperties.setProperty('ssId', ssId);
   formRanger_populateForm();
   app.close();
   return app;
@@ -240,9 +246,10 @@ function formRanger_getSheetIndexFromId(ss, sheetId) {
 
 
 function formRanger_populateForm() {
-  var ssId = ScriptProperties.getProperty('ssId');
+  var scriptProperties = PropertiesService.getScriptProperties();
+  var ssId = scriptProperties.getProperty('ssId');
   var ss = SpreadsheetApp.openById(ssId);
-  var questionRanges = ScriptProperties.getProperty('questionRanges');
+  var questionRanges = scriptProperties.getProperty('questionRanges');
   if (!questionRanges) {
     Browser.msgBox("Oops. Something is wrong with your settings.");
     return;
@@ -298,7 +305,8 @@ function formRanger_triggerSettings() {
   var panel = app.createVerticalPanel();
   var label = app.createLabel("Decide how you want to trigger the refresh of Spreadsheet-linked form options").setStyleAttribute('marginBottom', '15px');
   panel.add(label);
-  var triggerTypes = ScriptProperties.getProperty('triggerTypes');
+  var scriptProperties = PropertiesService.getScriptProperties();
+  var triggerTypes = scriptProperties.getProperty('triggerTypes');
   if (triggerTypes) {
     triggerTypes = triggerTypes.split(",");
   } else {
@@ -330,6 +338,7 @@ function formRanger_saveTriggers(e) {
   var onEdit = e.parameter.onEdit;
   var everyFive = e.parameter.everyFive;
   var triggerTypes = [];
+  var scriptProperties = PropertiesService.getScriptProperties();
   if (onFormSubmit=="true") {
     triggerTypes.push('onFormSubmit');
   }
@@ -341,7 +350,7 @@ function formRanger_saveTriggers(e) {
   }
   formRanger_checkSetTriggers(triggerTypes);
   triggerTypes.join();
-  ScriptProperties.setProperty('triggerTypes', triggerTypes.toString());
+  scriptProperties.setProperty('triggerTypes', triggerTypes.toString());
   app.close();
   return app;
 }
@@ -349,7 +358,8 @@ function formRanger_saveTriggers(e) {
 
 
 function formRanger_checkSetTriggers(triggerTypesVar) {
-  var ssId = ScriptProperties.getProperty('ssId');
+  var scriptProperties = PropertiesService.getScriptProperties();
+  var ssId = scriptProperties.getProperty('ssId');
   if (!ssId) {
     ssId = SpreadsheetApp.getActiveSpreadsheet().getId();
   }
